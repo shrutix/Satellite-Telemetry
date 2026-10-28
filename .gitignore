@@ -6,6 +6,11 @@
 env/
 venv/
 .venv
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+EOF
 
 # Streamlit specific secrets and config
 .streamlit/secrets.toml
