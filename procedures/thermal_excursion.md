@@ -1,7 +1,7 @@
 ---
 id: SOP-002
 title: Temperature Outside Limits, Thermal Excursion
-channel: thermal_excursion
+channel: temperature_c
 severity: High
 escalate_to: Thermal subsystem engineer on call
 ---

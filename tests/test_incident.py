@@ -6,6 +6,7 @@ import pytest
  
 from incident import OUTCOMES, IncidentError, IncidentLog
 from sop import load_all, parse_procedure
+from sop import PROCEDURES_DIR, load_procedure, parse_procedure
  
 SOP_TEXT = """---
 id: SOP-077
@@ -257,16 +258,30 @@ def test_markdown_report_for_an_open_incident(log):
     assert "**Status:** open" in log.to_markdown()
  
  
-# --- the real procedures ---
- 
-@pytest.mark.parametrize("sop_id", sorted(load_all()))
-def test_every_shipped_procedure_can_be_run_to_resolution(sop_id):
-    procedure = load_all()[sop_id]
+# --- real procedures ---
+
+SOP_FILES = sorted(
+    p for p in PROCEDURES_DIR.glob("*.md") if not p.name.startswith("_")
+)
+
+
+@pytest.mark.parametrize("path", SOP_FILES, ids=lambda p: p.name)
+def test_every_shipped_procedure_can_be_run_to_resolution(path):
+    procedure = load_procedure(path)
     log = IncidentLog(procedure, "Test Operator")
     finish_all_steps(log)
     log.close("resolved")
     assert log.progress == (len(procedure.steps),) * 2
     assert len(list(csv.DictReader(io.StringIO(log.to_csv())))) == len(procedure.steps) + 2
+ 
+#@pytest.mark.parametrize("sop_id", sorted(load_all()))
+#def test_every_shipped_procedure_can_be_run_to_resolution(sop_id):
+#    procedure = load_all()[sop_id]
+#    log = IncidentLog(procedure, "Test Operator")
+#    finish_all_steps(log)
+#    log.close("resolved")
+#    assert log.progress == (len(procedure.steps),) * 2
+#    assert len(list(csv.DictReader(io.StringIO(log.to_csv())))) == len(procedure.steps) + 2
  
  
 def test_outcomes_constant_matches_what_close_accepts(log):

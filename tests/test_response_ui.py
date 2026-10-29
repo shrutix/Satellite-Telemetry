@@ -44,11 +44,17 @@ def test_no_alerts_means_no_procedure_to_run():
     assert any("no procedure to run" in i.value for i in at.info)
     assert not [b for b in at.button if b.label == "Start incident"]
  
- 
 def test_alert_offers_a_matching_procedure():
     at = AppTest.from_function(_thermal_script, default_timeout=30).run()
     assert not at.exception
-    assert "SOP-002" in at.selectbox(key="procedure_choice").options
+    choice = at.selectbox(key="procedure_choice")
+    assert any(label.startswith("SOP-002") for label in choice.options)
+    assert choice.value == "SOP-002"  # .value is underlying id, not label
+
+#def test_alert_offers_a_matching_procedure():
+#    at = AppTest.from_function(_thermal_script, default_timeout=30).run()
+#    assert not at.exception
+#    assert "SOP-002" in at.selectbox(key="procedure_choice").options
  
  
 def test_starting_requires_an_operator_name():
