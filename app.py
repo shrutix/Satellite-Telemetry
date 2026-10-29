@@ -3,6 +3,7 @@ import streamlit as st
  
 from detector import LIMITS, detect_anomalies, violation_column
 from telemetry import CHANNELS, SCENARIOS, generate_telemetry
+from response_ui import render_guided_response
  
 st.set_page_config(
     page_title="Satellite Telemetry Monitor",
@@ -97,6 +98,9 @@ else:
     st.dataframe(alerts, width="stretch")
  
 export_cols = ["timestamp", *CHANNELS, "alerts", "is_anomaly"]
+
+render_guided_response(df, CHANNELS)
+
 st.download_button(
     "Download telemetry CSV",
     data=df[export_cols].to_csv(index=False).encode("utf-8"),
