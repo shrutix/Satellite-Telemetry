@@ -10,7 +10,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .DS_Store
-EOF
+.venv*
+*.icloud
 
 # Streamlit specific secrets and config
 .streamlit/secrets.toml
