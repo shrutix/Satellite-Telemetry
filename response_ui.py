@@ -162,7 +162,12 @@ def _render_incident(log):
         st.success(f"Incident closed as {log.outcome}.")
  
     st.markdown("**Incident log**")
-    st.dataframe(pd.DataFrame(log.to_rows()), width="stretch", hide_index=True)
+    #st.dataframe(pd.DataFrame(log.to_rows()), width="stretch", hide_index=True)
+    
+    log_table = pd.DataFrame(log.to_rows())
+    # Blank for events with no step number; real integer column keeps Arrow working
+    log_table["step"] = pd.to_numeric(log_table["step"], errors="coerce").astype("Int64")
+    st.dataframe(log_table, width="stretch", hide_index=True)
  
     d1, d2 = st.columns(2)
     d1.download_button(
