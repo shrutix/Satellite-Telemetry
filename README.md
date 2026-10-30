@@ -101,7 +101,9 @@ print(df.loc[df["is_anomaly"], ["timestamp", "temperature_c", "alerts"]].head())
 
 ## Operations
 
-Detecting a fault is only half the job. In real operations, an operator follows a written procedure so that every anomaly is handled the same safe way, and records what they did. This project models that workflow.
+Detecting a fault is only half the job. In real operations, an operator follows a written procedure so that every anomaly is handled the same safe way, and records what they did. This simulator models that workflow.
+
+![Full guided response of an SOP for a thermal excursion fault](thermalSOPOperation.png)
 
 ### Standard operating procedures
 
